@@ -2,13 +2,13 @@ import React from 'react';
 
 import "./user-table.css";
 
-const UserTable = ({people}) => {
+const UserTable = ({people, onClickRow}) => {
 	const renderPeople = () => {
 		return people.map(person => {
 			const {id, firstName, lastName, email, phone, adress: {state}} = person;
 
 			return (
-				<tr key={phone} >
+				<tr key={phone} onClick={() => onClickRow(person)}>
 					<td>{id}</td>
 					<td>{firstName}</td>
 					<td>{lastName}</td>

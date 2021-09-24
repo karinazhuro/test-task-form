@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 
 import InputSearch from "../input-searching";
 import UserTable from "../user-table";
+import UserInfo from "../user-info";
+
 import TestServices from "../../services/test-services";
 
 export default class App extends Component {
@@ -10,9 +12,11 @@ export default class App extends Component {
 		this.state = {
 			people: [],
 			inputSearchValue: '',
+			person: null,
 		};
 
 		this.onTextChange = this.onTextChange.bind(this);
+		this.onClickRow = this.onClickRow.bind(this);
 	}
 
 	testServices = new TestServices();
@@ -48,11 +52,21 @@ export default class App extends Component {
 		return people.filter(value => containsName(value.firstName) || containsName(value.lastName));
 	};
 
+	onClickRow(person) {
+		this.setState({
+			person,
+		});
+	}
+
 	render() {
+		const {person} = this.state;
+		const info = person ? <UserInfo person={person}/> : null;
+
 		return (
 			<div>
 				<InputSearch onTextChange={this.onTextChange}/>
-				<UserTable people={this.filteredPeopleSelector(this.state)}/>
+				<UserTable people={this.filteredPeopleSelector(this.state)} onClickRow={this.onClickRow}/>
+				{person && <UserInfo person={person}/>}
 			</div>
 		)
 	}
