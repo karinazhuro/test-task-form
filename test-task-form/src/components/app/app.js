@@ -4,32 +4,37 @@ import InputSearch from "../input-searching";
 import UserTable from "../user-table";
 import UserInfo from "../user-info";
 
-import TestServices from "../../services/test-services";
+import ItrexServices from "../../services/itrex-services";
+import groupBy from "../../utils/groupBy";
+import SelectState from "../select-state";
 
 export default class App extends Component {
 	constructor() {
 		super();
 		this.state = {
 			people: [],
+			stateToPeople: {},
 			inputSearchValue: '',
 			person: null,
 		};
 
 		this.onTextChange = this.onTextChange.bind(this);
-		this.onClickRow = this.onClickRow.bind(this);
+		this.onRowClick = this.onRowClick.bind(this);
 	}
 
-	testServices = new TestServices();
+	itrexServices = new ItrexServices();
 
 	componentDidMount() {
 		this.init()
 	}
 
 	async init() {
-		const people = await this.testServices.getPeople();
+		const people = await this.itrexServices.getPeople();
+		const stateToPeople = groupBy(people, (person) => person.adress.state);
 
 		this.setState({
 			people,
+			stateToPeople,
 		})
 	}
 
@@ -52,22 +57,25 @@ export default class App extends Component {
 		return people.filter(value => containsName(value.firstName) || containsName(value.lastName));
 	};
 
-	onClickRow(person) {
+	onRowClick(person) {
 		this.setState({
 			person,
 		});
-	}
+	};
 
 	render() {
-		const {person} = this.state;
-		const info = person ? <UserInfo person={person}/> : null;
+		const {person, stateToPeople} = this.state;
 
 		return (
 			<div>
 				<InputSearch onTextChange={this.onTextChange}/>
-				<UserTable people={this.filteredPeopleSelector(this.state)} onClickRow={this.onClickRow}/>
+				<SelectState stateToPeople={stateToPeople}/>
+				<UserTable people={this.filteredPeopleSelector(this.state)}
+									 onRowClick={this.onRowClick}
+									 sortByColumns={this.sortByColumns}/>
 				{person && <UserInfo person={person}/>}
 			</div>
 		)
 	}
-};
+}
+;
