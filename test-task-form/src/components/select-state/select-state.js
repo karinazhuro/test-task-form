@@ -1,3 +1,5 @@
+import "./select-state.css";
+
 const SelectState = ({stateToPeople, selectedState, onHandleChange}) => {
 	const renderOption = () => {
 		const getKeys = Object.keys(stateToPeople);

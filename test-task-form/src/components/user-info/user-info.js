@@ -10,7 +10,7 @@ const UserInfo = ({person}) => {
 	return (
 		<div className="user-info">
 			<h2>Profile info</h2>
-			<ul>
+			<ul className="info">
 				<li>Selected profile: {`${firstName} ${lastName}`}</li>
 				<li>Description: {description}</li>
 				<li>Address: {streetAddress}</li>

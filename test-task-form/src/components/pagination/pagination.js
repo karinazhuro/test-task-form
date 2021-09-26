@@ -1,3 +1,5 @@
+import "./pagination.css";
+
 const Pagination = ({quantityPages, onPaginationPageClick}) => {
 	const renderButtonPages = () => {
 		const arrBtn = [];
@@ -12,7 +14,7 @@ const Pagination = ({quantityPages, onPaginationPageClick}) => {
 	};
 
 	return (
-		<div>
+		<div className="pagination">
 			<button onClick={() => onPaginationPageClick('-1')}>Previous</button>
 			{renderButtonPages()}
 			<button onClick={() => onPaginationPageClick('+1')}>Next</button>

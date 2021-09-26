@@ -1,8 +1,8 @@
-import React from 'react';
+import "./input-search.css";
 
 const InputSearch = ({onTextChange}) => {
 	return (
-		<div className="input-searching">
+		<div className="input-search">
 			<input type="text"
 						 placeholder="Search by name:"
 						 onChange={onTextChange}/>

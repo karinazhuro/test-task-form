@@ -1,3 +1,10 @@
 .user-info {
+    text-align: center;
+
     border: 1px solid grey;
+}
+
+.info {
+    padding: 0;
+    list-style: none;
 }

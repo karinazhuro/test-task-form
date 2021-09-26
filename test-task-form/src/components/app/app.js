@@ -9,6 +9,8 @@ import UserInfo from "../user-info";
 import ItrexServices from "../../services/itrex-services";
 import groupBy from "../../utils/groupBy";
 
+import "./app.css";
+
 export default class App extends Component {
 	constructor() {
 		super();
@@ -68,9 +70,9 @@ export default class App extends Component {
 		const firstPeopleIndex = lastPeopleIndex - personPerPage;
 		const currentPeople = people.slice(firstPeopleIndex, lastPeopleIndex)
 
-		if (inputSearchValue === '' && selectedState === null) return sortedPeople;
+		if (inputSearchValue === '' && selectedState === null) return currentPeople;
 
-		return sortedPeople.filter(value => containsName(value.firstName) || containsName(value.lastName));
+		return currentPeople.filter(value => containsName(value.firstName) || containsName(value.lastName));
 	};
 
 	onRowClick(person) {
@@ -107,7 +109,7 @@ export default class App extends Component {
 		const {person, stateToPeople, selectedState, quantityPages} = this.state;
 
 		return (
-			<React.Fragment>
+			<div className="wrapper">
 				<div className="setting">
 					<InputSearch onTextChange={this.onTextChange}/>
 					<SelectState stateToPeople={stateToPeople}
@@ -120,7 +122,7 @@ export default class App extends Component {
 				<Pagination quantityPages={quantityPages}
 										onPaginationPageClick={this.onPaginationPageClick}/>
 				{person && <UserInfo person={person}/>}
-			</React.Fragment>
+			</div>
 		)
 	}
 }
