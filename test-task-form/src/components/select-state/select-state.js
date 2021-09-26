@@ -1,7 +1,5 @@
-import {Component} from "react";
-
-export default class SelectState extends Component {
-	renderOption = (stateToPeople) => {
+const SelectState = ({stateToPeople, selectedState, onHandleChange}) => {
+	const renderOption = () => {
 		const getKeys = Object.keys(stateToPeople);
 
 		return getKeys.map(key => {
@@ -9,17 +7,14 @@ export default class SelectState extends Component {
 		});
 	};
 
-
-	render() {
-		const {stateToPeople, selectedState, onHandleChange} = this.props;
-
-		return (
-			<div className="select-state">
-				<select value={selectedState} onChange={onHandleChange}>
-					<option value="">Sort by state</option>
-					{this.renderOption(stateToPeople)}
-				</select>
-			</div>
-		)
-	}
+	return (
+		<div className="select-state">
+			<select value={selectedState} onChange={onHandleChange}>
+				<option value="">Sort by state</option>
+				{renderOption()}
+			</select>
+		</div>
+	)
 }
+
+export default SelectState;
