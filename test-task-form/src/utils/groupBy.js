@@ -1,11 +1,10 @@
 function groupBy(array, keySelector) {
-	const map = new Map();
+	const map = {};
 
 	array.forEach((item) => {
 		const key = keySelector(item);
-		const collection = map.get(key);
 
-		!collection ? map.set(key, [item]) : collection.push(item);
+		(map[key] = map[key] ?? []).push(item)
 	});
 
 	return map;

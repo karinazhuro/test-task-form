@@ -16,10 +16,12 @@ export default class App extends Component {
 			stateToPeople: {},
 			inputSearchValue: '',
 			person: null,
+			selectedState: null,
 		};
 
 		this.onTextChange = this.onTextChange.bind(this);
 		this.onRowClick = this.onRowClick.bind(this);
+		this.onHandleChange = this.onHandleChange.bind(this);
 	}
 
 	itrexServices = new ItrexServices();
@@ -47,14 +49,17 @@ export default class App extends Component {
 	};
 
 	filteredPeopleSelector(state) {
-		const {people, inputSearchValue} = state;
+		const {people, inputSearchValue, stateToPeople, selectedState} = state;
 		const containsName = (name) => {
 			return name.toLowerCase().startsWith(inputSearchValue.trim().toLowerCase());
 		};
+		const sortedPeople = selectedState ? stateToPeople[selectedState] : people;
 
-		if (inputSearchValue === '') return people;
+		console.log(selectedState);
 
-		return people.filter(value => containsName(value.firstName) || containsName(value.lastName));
+		if (inputSearchValue === '' && selectedState === null) return people;
+
+		return sortedPeople.filter(value => containsName(value.firstName) || containsName(value.lastName));
 	};
 
 	onRowClick(person) {
@@ -63,13 +68,24 @@ export default class App extends Component {
 		});
 	};
 
+	onHandleChange(e) {
+		const value = e.target.value
+		const selectedState = value && true === '' ? null : value;
+
+		this.setState({
+			selectedState,
+		});
+	};
+
 	render() {
-		const {person, stateToPeople} = this.state;
+		const {person, stateToPeople, selectedState} = this.state;
 
 		return (
 			<div>
 				<InputSearch onTextChange={this.onTextChange}/>
-				<SelectState stateToPeople={stateToPeople}/>
+				<SelectState stateToPeople={stateToPeople}
+										 selectValue={selectedState}
+										 onHandleChange={this.onHandleChange}/>
 				<UserTable people={this.filteredPeopleSelector(this.state)}
 									 onRowClick={this.onRowClick}
 									 sortByColumns={this.sortByColumns}/>
@@ -78,4 +94,3 @@ export default class App extends Component {
 		)
 	}
 }
-;

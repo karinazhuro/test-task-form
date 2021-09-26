@@ -28,9 +28,11 @@ export default class UserTable extends Component {
 	};
 
 	selectColumn = (key) => {
+		const {columnKey, isAsc} = this.state;
+
 		this.setState({
 			columnKey: key,
-			isAsc: this.state.columnKey === key ? !this.state.isAsc : true,
+			isAsc: columnKey === key ? !isAsc : true,
 		})
 	};
 
@@ -66,11 +68,9 @@ export default class UserTable extends Component {
 
 	render() {
 		let rotate = this.state.isAsc ? '0' : '180';
-
 		const style = {
 			transform: `rotate(${rotate}deg)`
-		}
-
+		};
 		const imgSort = <span className="material-icons arrow-drop-up"
 													style={style}>arrow_drop_up</span>;
 
