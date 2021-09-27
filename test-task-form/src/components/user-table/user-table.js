@@ -87,6 +87,7 @@ export default class UserTable extends Component {
 		const compare = (a, b) => {
 			if (a[columnKey] < b[columnKey]) return -1;
 			if (a[columnKey] > b[columnKey]) return 1;
+
 			return 0;
 		};
 
@@ -111,9 +112,7 @@ export default class UserTable extends Component {
 		return (<th className={columnKey}
 								key={columnKey}
 								onClick={() => this.selectColumn(columnKey)}> {label} {imgSort}</th>)
-
 	};
-
 
 	onPaginationPageClick(num) {
 		const {quantityPages} = this.state;

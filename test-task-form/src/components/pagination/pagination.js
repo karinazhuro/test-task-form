@@ -1,8 +1,7 @@
 import "./pagination.css";
-import {Component} from "react";
 
-export default class Pagination extends Component {
-	renderButtonPages = (quantityPages, onPaginationPageClick) => {
+const Pagination = ({quantityPages, currentPage, onPaginationPageClick}) => {
+	const renderButtonPages = () => {
 		const arrBtn = [];
 
 		for (let num = 1; num <= quantityPages; num++) {
@@ -17,19 +16,17 @@ export default class Pagination extends Component {
 		return arrBtn;
 	};
 
-	render() {
-		const {quantityPages, currentPage, onPaginationPageClick} = this.props;
+	return (
+		<div className="pagination">
+			<button className="btn-pagination"
+							onClick={() => onPaginationPageClick(currentPage - 1)}>Previous
+			</button>
+			{renderButtonPages()}
+			<button className="btn-pagination"
+							onClick={() => onPaginationPageClick(currentPage + 1)}>Next
+			</button>
+		</div>
+	)
+}
 
-		return (
-			<div className="pagination">
-				<button className="btn-pagination"
-								onClick={() => onPaginationPageClick(currentPage -1)}>Previous
-				</button>
-				{this.renderButtonPages(quantityPages, onPaginationPageClick)}
-				<button className="btn-pagination"
-								onClick={() => onPaginationPageClick(currentPage +1)}>Next
-				</button>
-			</div>
-		)
-	}
-};
+export default Pagination;

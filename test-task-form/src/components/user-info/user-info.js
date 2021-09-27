@@ -4,7 +4,7 @@ const UserInfo = ({person}) => {
 	const {
 		firstName, lastName,
 		adress: {streetAddress, city, state, zip},
-		description
+		description,
 	} = person;
 
 	return (

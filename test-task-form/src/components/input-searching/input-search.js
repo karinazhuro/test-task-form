@@ -6,8 +6,7 @@ const InputSearch = ({onTextChange}) => {
 			<input className="input-text"
 						 type="text"
 						 placeholder="Search by name:"
-						 onChange={onTextChange}
-			/>
+						 onChange={onTextChange}/>
 		</div>
 	)
 };

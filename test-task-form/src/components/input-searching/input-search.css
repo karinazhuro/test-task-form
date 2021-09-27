@@ -9,6 +9,6 @@
     /*cursor: pointer;*/
 }
 
-input-text:focus {
+.input-text:focus {
     border: 2px solid #286bc2;
 }

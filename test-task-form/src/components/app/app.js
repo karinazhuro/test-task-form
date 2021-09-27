@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import InputSearch from "../input-searching";
 import SelectState from "../select-state";
 import UserTable from "../user-table";
-import Pagination from "../pagination";
 import UserInfo from "../user-info";
 
 import ItrexServices from "../../services/itrex-services";
@@ -60,8 +59,8 @@ export default class App extends Component {
 		};
 		const sortedPeople = selectedState ? stateToPeople[selectedState] : people;
 
-
 		if (inputSearchValue === '' && selectedState === null) return sortedPeople;
+
 		return sortedPeople.filter(value => containsName(value.firstName) || containsName(value.lastName));
 	};
 
@@ -72,7 +71,7 @@ export default class App extends Component {
 	};
 
 	onHandleChange(e) {
-		const value = e.target.value
+		const value = e.target.value;
 		const selectedState = value && true === '' ? null : value;
 
 		this.setState({
@@ -82,8 +81,8 @@ export default class App extends Component {
 
 
 	render() {
-		const {person, stateToPeople, selectedState, quantityPages} = this.state;
-		const p1 = this.filteredPeopleSelector(this.state)
+		const {person, stateToPeople, selectedState} = this.state;
+
 		return (
 			<div className="wrapper">
 				<div className="setting">
@@ -92,7 +91,7 @@ export default class App extends Component {
 											 selectValue={selectedState}
 											 onHandleChange={this.onHandleChange}/>
 				</div>
-				<UserTable people={p1}
+				<UserTable people={this.filteredPeopleSelector(this.state)}
 									 onRowClick={this.onRowClick}
 									 sortByColumns={this.sortByColumns}/>
 				{person && <UserInfo person={person}/>}

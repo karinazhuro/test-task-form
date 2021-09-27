@@ -11,7 +11,8 @@ const SelectState = ({stateToPeople, selectedState, onHandleChange}) => {
 
 	return (
 		<div className="select-state">
-			<select value={selectedState} onChange={onHandleChange}>
+			<select value={selectedState}
+							onChange={onHandleChange}>
 				<option value="">Sort by state</option>
 				{renderOption()}
 			</select>
