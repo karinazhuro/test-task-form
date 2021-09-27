@@ -1,13 +1,18 @@
 table {
     margin: 20px auto;
+    border-spacing: 0;
+}
 
+.table-head {
     border: 1px solid grey;
 }
 
 th {
-    /*border: 1px solid grey;*/
+    border-bottom: 1px solid grey;
+    padding: 7px;
 }
 
-.arrow-drop-up {
-    /*transform: rotate(180deg);*/
+td {
+    border-bottom: 1px solid grey;
+    padding: 7px;
 }

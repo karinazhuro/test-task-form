@@ -1,3 +1,14 @@
 .select-state {
     margin: 0 20px;
 }
+
+select {
+    border: 1px solid #000;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+select:focus-visible {
+    border: 2px solid #286bc2;
+}

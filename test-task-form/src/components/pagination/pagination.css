@@ -1,5 +1,21 @@
 .pagination {
     display: flex;
     justify-content: center;
-    margin: 10px 0;
+    margin: 0 0 50px;
+}
+
+.btn-pagination {
+    padding: 10px;
+    margin: 1px;
+    background-color: #286bc2;
+    border: 2px solid #286bc2;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.btn-pagination:hover {
+    transition-duration: 0.2s;
+    border: 2px solid #286bc2;
+    background-color: #fff;
+    color: #000;
 }

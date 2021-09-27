@@ -1,25 +1,35 @@
 import "./pagination.css";
+import {Component} from "react";
 
-const Pagination = ({quantityPages, onPaginationPageClick}) => {
-	const renderButtonPages = () => {
+export default class Pagination extends Component {
+	renderButtonPages = (quantityPages, onPaginationPageClick) => {
 		const arrBtn = [];
 
-		for (let i = 1; i <= quantityPages; i++) arrBtn.push(i);
+		for (let num = 1; num <= quantityPages; num++) {
+			arrBtn.push(
+				<button className="btn-pagination"
+								key={num}
+								value={num}
+								onClick={() => onPaginationPageClick(num)}>{num}</button>
+			);
+		}
 
-		return arrBtn.map(num => {
-			return <button key={num}
-										 value={num}
-										 onClick={() => onPaginationPageClick(num)}>{num}</button>
-		});
+		return arrBtn;
 	};
 
-	return (
-		<div className="pagination">
-			<button onClick={() => onPaginationPageClick('-1')}>Previous</button>
-			{renderButtonPages()}
-			<button onClick={() => onPaginationPageClick('+1')}>Next</button>
-		</div>
-	)
-};
+	render() {
+		const {quantityPages, currentPage, onPaginationPageClick} = this.props;
 
-export default Pagination;
+		return (
+			<div className="pagination">
+				<button className="btn-pagination"
+								onClick={() => onPaginationPageClick(currentPage -1)}>Previous
+				</button>
+				{this.renderButtonPages(quantityPages, onPaginationPageClick)}
+				<button className="btn-pagination"
+								onClick={() => onPaginationPageClick(currentPage +1)}>Next
+				</button>
+			</div>
+		)
+	}
+};

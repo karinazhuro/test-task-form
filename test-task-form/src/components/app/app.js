@@ -21,16 +21,11 @@ export default class App extends Component {
 			inputSearchValue: '',
 			stateToPeople: {},
 			selectedState: null,
-
-			personPerPage: 20,
-			quantityPages: 0,
-			currentPage: 1,
 		};
 
 		this.onTextChange = this.onTextChange.bind(this);
 		this.onRowClick = this.onRowClick.bind(this);
 		this.onHandleChange = this.onHandleChange.bind(this);
-		this.onPaginationPageClick = this.onPaginationPageClick.bind(this);
 	}
 
 	itrexServices = new ItrexServices();
@@ -42,12 +37,10 @@ export default class App extends Component {
 	async init() {
 		const people = await this.itrexServices.getPeople();
 		const stateToPeople = groupBy(people, (person) => person.adress.state);
-		const quantityPages = people.length / this.state.personPerPage;
 
 		this.setState({
 			people,
 			stateToPeople,
-			quantityPages,
 		})
 	}
 
@@ -60,19 +53,16 @@ export default class App extends Component {
 	};
 
 	filteredPeopleSelector(state) {
-		const {people, inputSearchValue, stateToPeople, selectedState, personPerPage, currentPage} = state;
+
+		const {people, inputSearchValue, stateToPeople, selectedState} = state;
 		const containsName = (name) => {
 			return name.toLowerCase().startsWith(inputSearchValue.trim().toLowerCase());
 		};
 		const sortedPeople = selectedState ? stateToPeople[selectedState] : people;
 
-		const lastPeopleIndex = currentPage * personPerPage;
-		const firstPeopleIndex = lastPeopleIndex - personPerPage;
-		const currentPeople = people.slice(firstPeopleIndex, lastPeopleIndex)
 
-		if (inputSearchValue === '' && selectedState === null) return currentPeople;
-
-		return currentPeople.filter(value => containsName(value.firstName) || containsName(value.lastName));
+		if (inputSearchValue === '' && selectedState === null) return sortedPeople;
+		return sortedPeople.filter(value => containsName(value.firstName) || containsName(value.lastName));
 	};
 
 	onRowClick(person) {
@@ -90,24 +80,10 @@ export default class App extends Component {
 		});
 	};
 
-	onPaginationPageClick(num) {
-		const {currentPage, quantityPages} = this.state;
-		let page = currentPage;
-
-		if (num === '-1') page -= 1;
-		if (num === '+1') page += 1;
-		else page = num;
-
-		if (page < 1 || page > quantityPages) return;
-
-		this.setState({
-			currentPage: page,
-		});
-	};
 
 	render() {
 		const {person, stateToPeople, selectedState, quantityPages} = this.state;
-
+		const p1 = this.filteredPeopleSelector(this.state)
 		return (
 			<div className="wrapper">
 				<div className="setting">
@@ -116,11 +92,9 @@ export default class App extends Component {
 											 selectValue={selectedState}
 											 onHandleChange={this.onHandleChange}/>
 				</div>
-				<UserTable people={this.filteredPeopleSelector(this.state)}
+				<UserTable people={p1}
 									 onRowClick={this.onRowClick}
 									 sortByColumns={this.sortByColumns}/>
-				<Pagination quantityPages={quantityPages}
-										onPaginationPageClick={this.onPaginationPageClick}/>
 				{person && <UserInfo person={person}/>}
 			</div>
 		)

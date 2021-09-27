@@ -1,17 +1,49 @@
 import React, {Component} from 'react';
 
+import Pagination from "../pagination";
+
 import "./user-table.css";
 
 export default class UserTable extends Component {
-	state = {
-		columnKey: null,
-		isAsc: true,
+	constructor(props) {
+		super(props);
+		this.state = {
+			columnKey: null,
+			isAsc: true,
+
+			personPerPage: 20,
+			quantityPages: 0,
+			currentPage: 1,
+
+			columnHeaders: {
+				id: 'Id',
+				firstName: 'First Name',
+				lastName: 'Last Name',
+				email: 'Email',
+				phone: 'Phone',
+				state: 'State',
+			}
+		}
+
+		this.onPaginationPageClick = this.onPaginationPageClick.bind(this);
 	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({quantityPages: nextProps.people.length / this.state.personPerPage})
+	}
+
+	getPeoplePerPage = (people) => {
+		const {currentPage, personPerPage} = this.state;
+		const lastPeopleIndex = currentPage * personPerPage;
+		const firstPeopleIndex = lastPeopleIndex - personPerPage;
+
+		return people.slice(firstPeopleIndex, lastPeopleIndex)
+	};
 
 	renderPeople = () => {
 		const {people, onRowClick} = this.props;
 
-		return this.orderPeople(people).map(person => {
+		return this.getPeoplePerPage(this.orderPeople(people)).map(person => {
 			const {id, firstName, lastName, email, phone, adress: {state}} = person;
 
 			return (
@@ -66,30 +98,55 @@ export default class UserTable extends Component {
 		});
 	}
 
-	render() {
-		let rotate = this.state.isAsc ? '0' : '180';
+	renderHeaderCell = (columnKey, label) => {
+		let rotate = this.state.isAsc && this.state.columnKey === columnKey ? '0' : '180';
+
 		const style = {
 			transform: `rotate(${rotate}deg)`
 		};
+
 		const imgSort = <span className="material-icons arrow-drop-up"
 													style={style}>arrow_drop_up</span>;
 
+		return (<th className={columnKey}
+								key={columnKey}
+								onClick={() => this.selectColumn(columnKey)}> {label} {imgSort}</th>)
+
+	};
+
+
+	onPaginationPageClick(num) {
+		const {quantityPages} = this.state;
+
+		if (num < 1 || num > quantityPages) return;
+
+		this.setState({
+			currentPage: num,
+		});
+	};
+
+	render() {
+		const {quantityPages, currentPage} = this.state;
+
 		return (
-			<table>
-				<thead>
-				<tr>
-					<th onClick={() => this.selectColumn('id')}> id {imgSort}</th>
-					<th onClick={() => this.selectColumn('firstName')}> First Name {imgSort}</th>
-					<th onClick={() => this.selectColumn('lastName')}> Last Name {imgSort}</th>
-					<th onClick={() => this.selectColumn('email')}> Email {imgSort}</th>
-					<th onClick={() => this.selectColumn('phone')}> Phone {imgSort}</th>
-					<th onClick={() => this.selectColumn('state')}> State {imgSort}</th>
-				</tr>
-				</thead>
-				<tbody>
-				{this.renderPeople()}
-				</tbody>
-			</table>
+			<React.Fragment>
+				<table>
+					<thead>
+					<tr className="table-head">
+						{Object.entries(this.state.columnHeaders).map(([key, value]) => {
+							return this.renderHeaderCell(key, value);
+						})}
+					</tr>
+					</thead>
+					<tbody>
+					{this.renderPeople()}
+					</tbody>
+				</table>
+
+				<Pagination quantityPages={quantityPages}
+										currentPage={currentPage}
+										onPaginationPageClick={this.onPaginationPageClick}/>
+			</React.Fragment>
 		)
 	}
 };
